@@ -29,11 +29,16 @@ class PasswordController extends Controller
             'current_password' => ['required', 'current_password:web'],
             'password' => ['required', Password::defaults(), 'confirmed'],
         ]);
+        
+    
+        $passwordData = [
+            'password' => Hash::make($validated['password']),
+        ];
 
-        // Use the "hashed" cast on the User model by assigning plain text; it will be hashed automatically
-        $request->user()->forceFill([
-            'password' => $validated['password'],
-        ])->save();
+    
+        $request->user()->update($passwordData);
+
+     
 
         $request->user()->tokens()->delete();
 

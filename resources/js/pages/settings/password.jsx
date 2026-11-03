@@ -99,7 +99,7 @@ export default function Password() {
                                         <button
                                             type="button"
                                             onClick={() => setShowCurrent((v) => !v)}
-                                            className="absolute top-1/2 right-3 -translate-y-1/2 text-sm text-neutral-600"
+                                            className="absolute top-1/2 right-3 -translate-y-1/2 text-sm text-neutral-600 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-200"
                                         >
                                             {showCurrent ? 'Hide' : 'Show'}
                                         </button>
@@ -125,23 +125,25 @@ export default function Password() {
                                         <button
                                             type="button"
                                             onClick={() => setShowNew((v) => !v)}
-                                            className="absolute top-1/2 right-3 -translate-y-1/2 text-sm text-neutral-600"
+                                            className="absolute top-1/2 right-3 -translate-y-1/2 text-sm text-neutral-600 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-200"
                                         >
                                             {showNew ? 'Hide' : 'Show'}
                                         </button>
                                     </div>
-
-                                    <div className="mt-2">
-                                        <div className="h-2 w-full rounded bg-neutral-200 dark:bg-neutral-800">
-                                            <div className={`h-2 rounded ${strength.color}`} style={{ width: `${(strength.score / 5) * 100}%` }} />
-                                        </div>
-                                        <div className="mt-1 text-xs text-neutral-600 dark:text-neutral-400">Strength: {strength.label}</div>
-                                        <ul className="mt-2 list-disc space-y-1 pl-5 text-xs text-neutral-600 dark:text-neutral-400">
-                                            <li>At least 8 characters</li>
-                                            <li>Use upper and lower case letters</li>
-                                            <li>Include numbers and symbols</li>
-                                        </ul>
+                                    <div className="h-2 w-full overflow-hidden rounded bg-neutral-200 dark:bg-neutral-800">
+                                        <div
+                                            className={`h-2 rounded transition-all duration-300 ${strength.color}`}
+                                            style={{ width: `${(strength.score / 5) * 100}%` }}
+                                        />
                                     </div>
+                                    <div className="mt-1 text-xs text-neutral-600 dark:text-neutral-400">
+                                        Strength: <span className="font-semibold">{strength.label}</span>
+                                    </div>
+                                    <ul className="mt-2 list-disc space-y-1 pl-5 text-xs text-neutral-600 dark:text-neutral-400">
+                                        <li>At least 8 characters</li>
+                                        <li>Use upper and lower case letters</li>
+                                        <li>Include numbers and symbols</li>
+                                    </ul>
 
                                     <InputError message={errors.password} />
                                 </div>
@@ -161,7 +163,7 @@ export default function Password() {
                                         <button
                                             type="button"
                                             onClick={() => setShowConfirm((v) => !v)}
-                                            className="absolute top-1/2 right-3 -translate-y-1/2 text-sm text-neutral-600"
+                                            className="absolute top-1/2 right-3 -translate-y-1/2 text-sm text-neutral-600 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-200"
                                         >
                                             {showConfirm ? 'Hide' : 'Show'}
                                         </button>
@@ -172,22 +174,33 @@ export default function Password() {
 
                                 <div className="flex items-center gap-4">
                                     <Button
-                                        type="submit"
                                         disabled={processing}
                                         data-test="update-password-button"
-                                        className="cursor-pointer rounded-full px-12 py-5 transition-all hover:bg-[#FFC801] dark:hover:text-[#FAFAFA]"
+                                        className="cursor-pointer rounded-full bg-[#FFC801] px-12 py-5 font-semibold text-neutral-900 transition-all hover:bg-[#e6b401] disabled:cursor-not-allowed disabled:opacity-50"
                                     >
-                                        Save password
+                                        {processing ? 'Saving...' : 'Save password'}
                                     </Button>
 
                                     <Transition
                                         show={recentlySuccessful}
-                                        enter="transition ease-in-out"
-                                        enterFrom="opacity-0"
-                                        leave="transition ease-in-out"
+                                        enter="transition ease-in-out duration-300 transform"
+                                        enterFrom="opacity-0 scale-95 translate-x-4"
+                                        enterTo="opacity-100 scale-100 translate-x-0"
+                                        leave="transition ease-in-out duration-500"
+                                        leaveFrom="opacity-100"
                                         leaveTo="opacity-0"
                                     >
-                                        <p className="text-sm text-neutral-600">Saved</p>
+                                        <div className="flex items-center gap-2 rounded-lg border border-green-200 bg-green-50 px-4 py-2.5 text-sm text-green-700 shadow-sm dark:border-green-800 dark:bg-green-900/20 dark:text-green-400">
+                                            <svg className="h-5 w-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                    strokeWidth={2.5}
+                                                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                                                />
+                                            </svg>
+                                            <span className="font-medium">Password updated successfully!</span>
+                                        </div>
                                     </Transition>
                                 </div>
                             </>
